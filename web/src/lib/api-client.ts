@@ -44,6 +44,8 @@ import {
   initialThreeWayMatches,
   initialThreeWaySummary,
 } from "./api-mock";
+import type { BankRule, BankRuleInput } from "./api/schema";
+export type { BankRule, BankRuleInput } from "./api/schema";
 
 // ---------------------------------------------------------------------------
 // OpenAPI Wire Schemas (contracts/openapi.yaml & master-data-routes.ts)
@@ -999,6 +1001,52 @@ export const apiClient = {
       return { data: res, isLive: true, endpoint };
     } catch {
       return { data: { lineId }, isLive: false, endpoint };
+    }
+  },
+
+  async listBankRules(): Promise<ApiResult<BankRule[]>> {
+    const endpoint = "/v1/banking/rules";
+    try {
+      const res = await requestJson<{ rules: BankRule[] }>(endpoint);
+      return { data: res.rules, isLive: true, endpoint };
+    } catch {
+      return { data: [], isLive: false, endpoint };
+    }
+  },
+
+  async createBankRule(input: BankRuleInput): Promise<ApiResult<BankRule | null>> {
+    const endpoint = "/v1/banking/rules";
+    try {
+      const res = await requestJson<BankRule>(endpoint, {
+        method: "POST",
+        body: JSON.stringify(input),
+      });
+      return { data: res, isLive: true, endpoint };
+    } catch {
+      return { data: null, isLive: false, endpoint };
+    }
+  },
+
+  async updateBankRule(id: string, input: BankRuleInput): Promise<ApiResult<BankRule | null>> {
+    const endpoint = `/v1/banking/rules/${id}`;
+    try {
+      const res = await requestJson<BankRule>(endpoint, {
+        method: "PUT",
+        body: JSON.stringify(input),
+      });
+      return { data: res, isLive: true, endpoint };
+    } catch {
+      return { data: null, isLive: false, endpoint };
+    }
+  },
+
+  async deleteBankRule(id: string): Promise<ApiResult<boolean>> {
+    const endpoint = `/v1/banking/rules/${id}`;
+    try {
+      await requestJson(endpoint, { method: "DELETE" });
+      return { data: true, isLive: true, endpoint };
+    } catch {
+      return { data: false, isLive: false, endpoint };
     }
   },
 
