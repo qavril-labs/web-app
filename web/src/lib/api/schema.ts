@@ -339,6 +339,7 @@ export type ApprovalDecisionResponse = {
 };
 
 export type BankFeedLine = {
+  ruleId?: string;
   id: string;
   postedDate: string;
   reference: string;
@@ -882,6 +883,22 @@ export type NotificationStatus = {
   createdAt?: string;
   sentAt?: string;
 };
+
+export type BankRuleInput = {
+  name: string;
+  priority?: number;
+  active?: boolean;
+  direction?: "IN" | "OUT" | "ANY";
+  descriptionContains?: string;
+  amountMin?: string;
+  amountMax?: string;
+  accountCode: string;
+  label: string;
+};
+
+export type BankRule = (BankRuleInput) & ({
+  id: string;
+});
 
 // -------------------------------------------------------------
 // Operations Map
@@ -1526,5 +1543,31 @@ export interface Operations {
     path: "/v1/notifications/{id}";
     requestBody?: unknown;
     response: NotificationStatus;
+  };
+  "listBankRules": {
+    method: "GET";
+    path: "/v1/banking/rules";
+    requestBody?: unknown;
+    response: {
+      rules: BankRule[];
+    };
+  };
+  "createBankRule": {
+    method: "POST";
+    path: "/v1/banking/rules";
+    requestBody: BankRuleInput;
+    response: BankRule;
+  };
+  "updateBankRule": {
+    method: "PUT";
+    path: "/v1/banking/rules/{id}";
+    requestBody: BankRuleInput;
+    response: BankRule;
+  };
+  "deleteBankRule": {
+    method: "DELETE";
+    path: "/v1/banking/rules/{id}";
+    requestBody?: unknown;
+    response?: unknown;
   };
 }

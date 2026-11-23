@@ -192,6 +192,10 @@ export class ContractApiClient {
       "rejectApprovalRequest": { method: "POST", path: "/v1/approval-requests/{id}/reject" },
       "listNotifications": { method: "GET", path: "/v1/notifications" },
       "getNotification": { method: "GET", path: "/v1/notifications/{id}" },
+      "listBankRules": { method: "GET", path: "/v1/banking/rules" },
+      "createBankRule": { method: "POST", path: "/v1/banking/rules" },
+      "updateBankRule": { method: "PUT", path: "/v1/banking/rules/{id}" },
+      "deleteBankRule": { method: "DELETE", path: "/v1/banking/rules/{id}" },
     };
     return routes[opId] || { method: 'GET', path: '/health' };
   }
