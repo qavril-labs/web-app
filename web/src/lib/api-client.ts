@@ -126,6 +126,9 @@ export function getApiBaseUrl(): string {
   if (envUrl) {
     return envUrl.replace(/\/+$/, "");
   }
+  if (typeof window !== "undefined" && window.location.hostname === "staging.qavrillabs.com") {
+    return "https://api-staging.qavrillabs.com";
+  }
   return "http://localhost:3002";
 }
 
